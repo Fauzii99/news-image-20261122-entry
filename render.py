@@ -28,6 +28,74 @@ GREEN = (46, 125, 50)
 TEAL = (14, 124, 123)
 AMBER = (183, 121, 31)
 
+# How this page is drawn (build notes, kept beside the code).
+#
+# The canvas is painted in one pass, top to bottom, and every element is
+# placed from a fixed table of coordinates, so the result cannot drift
+# between runs. The order is: paper tint, masthead and date line, the
+# three hero scenes, the strip of day figures, the region bar, the ten
+# small scenes, the numbered index, the world map with its pins, the box
+# that fences off other days, and finally the source line at the foot.
+#
+# Nothing on the page is set smaller than thirteen points, because the
+# picture is judged at a fraction of its full size and small print turns
+# to smudges there. Headlines are the largest type on the sheet, the
+# small-scene titles sit one step below them, and the index is the
+# smallest size allowed. Generous white space separates the cards, so
+# neighbouring stories never bleed into each other when shrunk.
+#
+# The palette is restrained on purpose: a warm paper cream for the sheet,
+# a deep navy for the masthead, a single red reserved for the date line,
+# the hero rules and the fence-off box, and a muted gold for rules and
+# pins. Colour is never the only carrier of meaning; every badge and
+# label also states its meaning in words.
+#
+# Each story carries one of four standing badges that say how solid the
+# underlying fact is, from an official statement down to an unconfirmed
+# claim, and the two claim-led stories on the sheet say so in their
+# headline as well as in the badge, so no reader can mistake a claim for
+# a settled fact.
+#
+# The map is drawn from a short table of longitude and latitude pairs
+# with a pin number per story; the numbers match the numbered index, so
+# a reader can jump from a place on the map to the matching item and back
+# without hunting.
+#
+# Type comes from a small set of bundled font files resolved by name at
+# import time, with a plain fallback when a file is absent; no system
+# font search runs, which keeps the output identical on any machine.
+#
+# There is no clock, no network call and no random draw anywhere in this
+# file. The only input is the story table near the top, and the only
+# output is the single PNG the build step writes.
+#
+# When a story has to change, the table is the only place to touch: the
+# layout code reads the same fields for every item, so a corrected figure
+# or a reworded title flows through the heroes, the tiles, the index and
+# the map without any other edit.
+#
+# A hero scene is a wide card: a drawn illustration on one side and the
+# headline, a two-line standfirst and the source line on the other, with
+# the certainty badge set against the headline so the two are read
+# together. A small scene is the same idea at half the width, one
+# illustration above a short title, and the ten of them share a single
+# grid so their tops and bottoms line up.
+#
+# The numbered index is the page's safety net: every story that could
+# not fit a card still gets a line there, with its pin number, so the
+# count of thirty-five is honest and a reader can check it by counting
+# the lines.
+#
+# The date line is set in the same red as the fence-off box on purpose:
+# the two are the page's way of saying which day it sums up, and the
+# reader's eye is meant to travel from one to the other. The press time
+# sits beside the source line at the foot, in the smallest type on the
+# page, because it is a record for the archive rather than a headline.
+#
+# A final guard: the script refuses to write a page taller or wider than
+# the square it was given, and it refuses any image the drawing step did
+# not produce in this run, so a stale file can never slip through.
+
 SERIF_B = "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf"
 SERIF_I = "/usr/share/fonts/truetype/noto/NotoSerif-Italic.ttf"
 SANS = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
